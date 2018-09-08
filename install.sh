@@ -1,7 +1,7 @@
 echo "installing shutdown service..."
 
-touch /etc/systemd/shutdown.service
-cat > /etc/systemd/shutdown.service <<EOL
+touch /etc/systemd/system/shutdown.service
+cat > /etc/systemd/system/shutdown.service <<EOL
 
 [Unit]
 Description=Service to Monitor for Shutdown
@@ -16,12 +16,13 @@ WantedBy=multi-user.target
 
 EOL
 
-chmod +x /etc/systemd/shutdown.service
+chmod +x /etc/systemd/system/shutdown.service
 
 sudo systemctl enable shutdown.service
 
 echo "installing shutdown Script..."
 
+mkdir /etc/shutdown/
 touch /etc/shutdown/shutdown.py
 cat > /etc/shutdown/shutdown.py <<EOL
 
@@ -66,6 +67,6 @@ finally:                   # this block will run no matter how the try block exi
 GPIO.cleanup()
 
 EOL
-
+echo "Service not started automaticly but will on boot"
 echo "Done, ensure you have your switch pulling GPIO low when pressed and high when not..."
 
